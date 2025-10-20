@@ -3,6 +3,7 @@ import { ReadingCard } from "./ReadingCard";
 interface Reading {
   title: string;
   description: string;
+  content: string;
   premium?: boolean;
 }
 
@@ -31,6 +32,7 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
             key={index}
             title={reading.title}
             description={reading.description}
+            content={reading.content}
             level={level}
             premium={reading.premium}
           />
