@@ -21,12 +21,9 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
   return (
     <section className="mb-12">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground mb-1">Level {level}</h2>
-        <p className="text-sm text-muted-foreground">
-          {visibleCount} free texts • {premiumCount} premium texts
-        </p>
+        <h2 className="mb-1 font-bold text-foreground text-2xl">## Level {level} - {visibleCount} free texts</h2>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
         {readings.map((reading, index) => (
           <ReadingCard
             key={index}
@@ -38,13 +35,6 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
           />
         ))}
       </div>
-      {premiumCount > 0 && (
-        <div className="mt-4">
-          <button className="text-sm text-primary hover:text-primary/80 font-medium transition-colors">
-            Premium: {premiumCount} more texts
-          </button>
-        </div>
-      )}
     </section>
   );
 };

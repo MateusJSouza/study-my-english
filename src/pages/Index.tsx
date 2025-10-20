@@ -1,50 +1,38 @@
 import { LevelSection } from "@/components/LevelSection";
 import { readingsData } from "@/data/readings";
 import { BookOpen, GraduationCap } from "lucide-react";
-import heroImage from "@/assets/hero-reading.jpg";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       {/* Hero Section */}
-      <header className="relative bg-gradient-to-br from-primary/10 via-background to-background border-b border-border">
-        <div className="container mx-auto px-4 py-12 md:py-20">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <BookOpen className="w-8 h-8 text-primary" />
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-                  English Reading
-                </h1>
+      <header className="relative bg-background py-12 border-b border-border">
+        <div className="mx-auto px-4 container">
+          <div className="text-center">
+            <h1 className="mb-4 font-extrabold text-foreground text-5xl md:text-6xl">
+              The English Club Reading Practice
+            </h1>
+            <p className="mx-auto mb-8 max-w-2xl text-muted-foreground text-xl leading-relaxed">
+              Improve your English reading comprehension with texts organized by proficiency levels A1 to C1. 
+              Practice online and download PDFs for free.
+            </p>
+            <div className="flex justify-center items-center gap-6 text-sm">
+              <div className="flex items-center gap-2 font-medium text-primary">
+                <BookOpen className="w-5 h-5" />
+                <span>42 free texts</span>
               </div>
-              <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
-                English texts for beginners to practice reading and comprehension online and for free. 
-                Practicing your comprehension of written English will both improve your vocabulary and 
-                understanding of grammar and word order.
-              </p>
-              <div className="flex items-center gap-6 text-sm">
-                <div className="flex items-center gap-2">
-                  <GraduationCap className="w-5 h-5 text-primary" />
-                  <span className="text-foreground font-medium">42 free texts</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground">Premium: 234 texts</span>
-                </div>
-              </div>
-            </div>
-            <div className="hidden md:block">
-              <img 
-                src={heroImage} 
-                alt="English learning illustration" 
-                className="rounded-2xl shadow-[var(--shadow-card)] w-full h-auto"
-              />
+              
             </div>
           </div>
+        </div>
+        <div className="top-4 right-4 absolute">
+          <ThemeToggle />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
+      <main className="mx-auto px-4 py-12 container">
         <div className="mb-8">
           <p className="text-muted-foreground leading-relaxed">
             Prepared by experienced English teachers, the texts, articles and conversations are brief and 
@@ -55,15 +43,15 @@ const Index = () => {
         </div>
 
         {/* Filter Tabs */}
-        <div className="mb-10 flex gap-3 flex-wrap">
-          <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
-            all texts
+        <div className="flex flex-wrap gap-3 bg-muted mx-auto mb-10 p-1 rounded-lg w-fit">
+          <button className="bg-primary hover:bg-primary/90 shadow px-4 py-2 rounded-md font-medium text-primary-foreground text-sm transition-colors">
+            All Texts
           </button>
-          <button className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors">
-            new texts
+          <button className="hover:bg-muted-foreground/10 px-4 py-2 rounded-md font-medium text-muted-foreground text-sm transition-colors">
+            New Texts
           </button>
-          <button className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors">
-            coming soon
+          <button className="hover:bg-muted-foreground/10 px-4 py-2 rounded-md font-medium text-muted-foreground text-sm transition-colors">
+            Coming Soon
           </button>
         </div>
 
@@ -82,9 +70,9 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border mt-20 py-8 bg-secondary/30">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© 2025 English Reading Hub. All Rights Reserved.</p>
+      <footer className="bg-secondary mt-20 py-8 border-t border-border">
+        <div className="mx-auto px-4 text-muted-foreground text-sm text-center container">
+          <p>© 2025 The English Club. All Rights Reserved.</p>
         </div>
       </footer>
     </div>

@@ -60,23 +60,17 @@ export const ReadingCard = ({ title, description, level, content, premium = fals
 
   return (
     <>
-      <Card className="group hover:shadow-[var(--shadow-hover)] transition-all duration-300 border-border bg-card">
-        <CardHeader className="pb-3">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1">
-              <CardTitle className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                {title}
-              </CardTitle>
-              <CardDescription className="mt-1 text-sm text-muted-foreground">
-                {description}
-              </CardDescription>
-            </div>
-            {premium && (
-              <span className="text-xs font-medium px-2 py-1 bg-secondary text-secondary-foreground rounded-md shrink-0">
-                Premium
-              </span>
-            )}
+      <Card className="group bg-card hover:shadow-[var(--shadow-hover)] border-border transition-all duration-300">
+        <CardHeader className="flex-row justify-between items-center space-y-0 pb-2">
+          <div className="space-y-1">
+            <CardTitle className="font-semibold text-foreground group-hover:text-primary text-lg transition-colors">
+              {title}
+            </CardTitle>
+            <CardDescription className="text-muted-foreground text-sm">
+              {description}
+            </CardDescription>
           </div>
+          
         </CardHeader>
         <CardContent className="flex items-center gap-2">
           <Button

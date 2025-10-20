@@ -72,15 +72,15 @@ export const ReadingViewer = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[85vh]">
+      <DialogContent className="max-w-4xl max-h-[85vh]">
         <DialogHeader>
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex justify-between items-start gap-4">
             <div className="flex-1">
-              <DialogTitle className="text-2xl mb-2">{title}</DialogTitle>
+              <DialogTitle className="mb-2 text-2xl">{title}</DialogTitle>
               <DialogDescription className="text-base">
                 {description}
               </DialogDescription>
-              <span className="inline-block mt-2 text-xs font-medium px-2 py-1 bg-primary/10 text-primary rounded-md">
+              <span className="inline-block bg-primary/10 mt-2 px-2 py-1 rounded-md font-medium text-primary text-xs">
                 Level {level}
               </span>
             </div>
@@ -90,13 +90,13 @@ export const ReadingViewer = ({
               onClick={handleDownloadPDF}
               className="shrink-0"
             >
-              <Download className="w-4 h-4 mr-2" />
+              <Download className="mr-2 w-4 h-4" />
               Download PDF
             </Button>
           </div>
         </DialogHeader>
-        <ScrollArea className="h-[60vh] pr-4">
-          <div className="prose prose-sm max-w-none">
+        <ScrollArea className="pr-4 h-[60vh]">
+          <div className="max-w-none prose prose-sm">
             {content.split('\n\n').map((paragraph, index) => (
               <p key={index} className="mb-4 text-foreground leading-relaxed">
                 {paragraph}
