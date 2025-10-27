@@ -8,91 +8,83 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* Quase branco */
-    --foreground: 282 79% 15%; /* Roxo escuro para texto */
+    --background: 0 0% 100%;
+    --foreground: 282 79% 15%;
 
-    --card: 0 0% 100%; /* Branco para card */
-    --card-foreground: 282 79% 15%; /* Roxo escuro para texto no card */
+    --card: 0 0% 100%;
+    --card-foreground: 282 79% 15%;
 
-    --popover: 0 0% 100%; /* Branco para popover */
-    --popover-foreground: 282 79% 15%; /* Roxo escuro para texto no popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 282 79% 15%;
 
-    --primary: 282 79% 41%; /* Roxo escuro principal */
-    --primary-foreground: 0 0% 100%; /* Branco para texto no primary */
+    --primary: 282 79% 41%; /* #8d19b8 */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 270 100% 90%; /* Lilás muito claro */
-    --secondary-foreground: 282 79% 15%; /* Roxo escuro para texto no secondary */
+    --secondary: 285 100% 76%; /* #dd85ff */
+    --secondary-foreground: 282 79% 15%;
 
-    --muted: 270 10% 95%; /* Cinza lilás muted */
-    --muted-foreground: 282 15% 45%; /* Roxo muted para texto */
+    --muted: 0 0% 96%;
+    --muted-foreground: 282 20% 40%;
 
-    --accent: 50 100% 50%; /* Amarelo dourado de destaque */
-    --accent-foreground: 282 79% 15%; /* Roxo escuro para texto no accent */
+    --accent: 48 100% 51%; /* #ffd703 */
+    --accent-foreground: 282 79% 15%;
 
-    --destructive: 0 84.2% 60.2%; /* Vermelho para ações destrutivas */
-    --destructive-foreground: 0 0% 100%; /* Branco para texto no destructive */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 270 10% 85%; /* Borda lilás clara */
-    --input: 270 10% 85%; /* Borda lilás clara para input */
-    --ring: 282 79% 41%; /* Roxo escuro para ring */
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 282 79% 41%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --gradient-hero: linear-gradient(135deg, hsl(282 79% 41%), hsl(270 100% 76%)); /* Gradiente roxo */
-    --shadow-card: 0 4px 12px hsl(282 79% 41% / 0.1);
-    --shadow-hover: 0 8px 24px hsl(282 79% 41% / 0.2);
-
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 282 79% 15%;
     --sidebar-primary: 282 79% 41%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 270 10% 95%;
-    --sidebar-accent-foreground: 282 15% 45%;
-    --sidebar-border: 270 10% 85%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 282 20% 40%;
+    --sidebar-border: 0 0% 90%;
     --sidebar-ring: 282 79% 41%;
   }
 
   .dark {
-    --background: 240 10% 5%; /* Cinza muito escuro, quase preto */
-    --foreground: 270 100% 90%; /* Lilás claro para texto */
+    --background: 282 30% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 240 10% 8%; /* Cinza escuro para card */
-    --card-foreground: 270 100% 90%; /* Lilás claro para texto no card */
+    --card: 282 25% 12%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 8%; /* Cinza escuro para popover */
-    --popover-foreground: 270 100% 90%; /* Lilás claro para texto no popover */
+    --popover: 282 25% 12%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 270 100% 76%; /* Lilás principal */
-    --primary-foreground: 282 79% 15%; /* Roxo escuro para texto no primary */
+    --primary: 285 100% 76%; /* #dd85ff */
+    --primary-foreground: 282 79% 15%;
 
-    --secondary: 282 79% 30%; /* Roxo mais escuro para secondary */
-    --secondary-foreground: 270 100% 90%; /* Lilás claro para texto no secondary */
+    --secondary: 282 79% 41%; /* #8d19b8 */
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 10% 15%; /* Cinza muted escuro */
-    --muted-foreground: 270 10% 60%; /* Lilás muted claro para texto */
+    --muted: 282 20% 18%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 50 100% 40%; /* Amarelo dourado mais escuro para destaque */
-    --accent-foreground: 240 10% 5%; /* Cinza muito escuro para texto no accent */
+    --accent: 48 100% 51%; /* #ffd703 */
+    --accent-foreground: 282 79% 15%;
 
-    --destructive: 0 62.8% 30.6%; /* Vermelho escuro para ações destrutivas */
-    --destructive-foreground: 0 0% 100%; /* Branco para texto no destructive */
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 240 10% 20%; /* Borda cinza escura */
-    --input: 240 10% 20%; /* Borda cinza escura para input */
-    --ring: 270 100% 76%; /* Lilás para ring */
+    --border: 282 20% 20%;
+    --input: 282 20% 20%;
+    --ring: 285 100% 76%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(270 100% 76%), hsl(282 79% 41%)); /* Gradiente lilás-roxo */
-    --shadow-card: 0 4px 12px hsl(270 100% 76% / 0.1);
-    --shadow-hover: 0 8px 24px hsl(270 100% 76% / 0.2);
-
-    --sidebar-background: 240 10% 5%;
-    --sidebar-foreground: 270 100% 90%;
-    --sidebar-primary: 270 100% 76%;
+    --sidebar-background: 282 30% 8%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 285 100% 76%;
     --sidebar-primary-foreground: 282 79% 15%;
-    --sidebar-accent: 240 10% 15%;
-    --sidebar-accent-foreground: 270 10% 60%;
-    --sidebar-border: 240 10% 20%;
-    --sidebar-ring: 270 100% 76%;
+    --sidebar-accent: 282 20% 18%;
+    --sidebar-accent-foreground: 0 0% 70%;
+    --sidebar-border: 282 20% 20%;
+    --sidebar-ring: 285 100% 76%;
   }
 }
 

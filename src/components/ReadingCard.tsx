@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Download } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Download, Eye, Crown } from "lucide-react";
 import { useState } from "react";
 import { ReadingViewer } from "./ReadingViewer";
 import jsPDF from "jspdf";
@@ -60,36 +61,31 @@ export const ReadingCard = ({ title, description, level, content, premium = fals
 
   return (
     <>
-      <Card className="group bg-card hover:shadow-[var(--shadow-hover)] border-border transition-all duration-300">
-        <CardHeader className="flex-row justify-between items-center space-y-0 pb-2">
-          <div className="space-y-1">
-            <CardTitle className="font-semibold text-foreground group-hover:text-primary text-lg transition-colors">
-              {title}
-            </CardTitle>
-            <CardDescription className="text-muted-foreground text-sm">
-              {description}
-            </CardDescription>
+      <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border-border">
+        <CardHeader>
+          <div className="flex items-start justify-between mb-2">
+            <Badge variant="outline" className="border-primary text-primary">{level}</Badge>
+            {premium && (
+              <Badge className="bg-accent text-accent-foreground">
+                <Crown className="w-3 h-3 mr-1" />
+                Premium
+              </Badge>
+            )}
           </div>
-          
+          <CardTitle className="text-xl text-card-foreground">{title}</CardTitle>
+          <CardDescription className="text-muted-foreground">{description}</CardDescription>
         </CardHeader>
-        <CardContent className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
+        <CardContent className="flex gap-2 pt-0">
+          <Button 
+            variant="default" 
+            className="flex-1"
             onClick={() => setIsViewerOpen(true)}
-            className="flex items-center gap-2 text-muted-foreground hover:text-primary"
           >
-            <FileText className="w-4 h-4" />
-            <span className="text-sm">View</span>
+            <Eye className="w-4 h-4 mr-2" />
+            View
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleDownloadPDF}
-            className="flex items-center gap-2 text-muted-foreground hover:text-primary"
-          >
+          <Button variant="outline" onClick={handleDownloadPDF}>
             <Download className="w-4 h-4" />
-            <span className="text-sm">PDF</span>
           </Button>
         </CardContent>
       </Card>
