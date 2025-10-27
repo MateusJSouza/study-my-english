@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download, Eye, Crown } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { useState } from "react";
 import { ReadingViewer } from "./ReadingViewer";
 import jsPDF from "jspdf";
@@ -11,10 +11,9 @@ interface ReadingCardProps {
   description: string;
   level: string;
   content: string;
-  premium?: boolean;
 }
 
-export const ReadingCard = ({ title, description, level, content, premium = false }: ReadingCardProps) => {
+export const ReadingCard = ({ title, description, level, content }: ReadingCardProps) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   const handleDownloadPDF = () => {
@@ -63,15 +62,7 @@ export const ReadingCard = ({ title, description, level, content, premium = fals
     <>
       <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border-border">
         <CardHeader>
-          <div className="flex items-start justify-between mb-2">
-            <Badge variant="outline" className="border-primary text-primary">{level}</Badge>
-            {premium && (
-              <Badge className="bg-accent text-accent-foreground">
-                <Crown className="w-3 h-3 mr-1" />
-                Premium
-              </Badge>
-            )}
-          </div>
+          <Badge variant="outline" className="border-primary text-primary mb-2 w-fit">{level}</Badge>
           <CardTitle className="text-xl text-card-foreground">{title}</CardTitle>
           <CardDescription className="text-muted-foreground">{description}</CardDescription>
         </CardHeader>

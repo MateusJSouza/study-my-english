@@ -5,7 +5,6 @@ interface Reading {
   title: string;
   description: string;
   content: string;
-  premium?: boolean;
 }
 
 interface LevelSectionProps {
@@ -44,7 +43,7 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
             </p>
           </div>
           <Badge variant="secondary" className="text-base px-4 py-2 w-fit">
-            {visibleCount} free / {totalTexts} total
+            {visibleCount} texts
           </Badge>
         </div>
       </div>
@@ -57,7 +56,6 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
             description={reading.description}
             content={reading.content}
             level={level}
-            premium={reading.premium}
           />
         ))}
       </div>
