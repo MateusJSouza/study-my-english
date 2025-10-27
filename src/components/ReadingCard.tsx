@@ -5,15 +5,17 @@ import { Download, Eye } from "lucide-react";
 import { useState } from "react";
 import { ReadingViewer } from "./ReadingViewer";
 import jsPDF from "jspdf";
+import { Question } from "@/data/readings";
 
 interface ReadingCardProps {
   title: string;
   description: string;
   level: string;
   content: string;
+  questions: Question[];
 }
 
-export const ReadingCard = ({ title, description, level, content }: ReadingCardProps) => {
+export const ReadingCard = ({ title, description, level, content, questions }: ReadingCardProps) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   const handleDownloadPDF = () => {
@@ -88,6 +90,7 @@ export const ReadingCard = ({ title, description, level, content }: ReadingCardP
         description={description}
         content={content}
         level={level}
+        questions={questions}
       />
     </>
   );

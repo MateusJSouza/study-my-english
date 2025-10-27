@@ -7,8 +7,11 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download } from "lucide-react";
 import jsPDF from "jspdf";
+import { Quiz } from "./Quiz";
+import { Question } from "@/data/readings";
 
 interface ReadingViewerProps {
   open: boolean;
@@ -17,6 +20,7 @@ interface ReadingViewerProps {
   description: string;
   content: string;
   level: string;
+  questions: Question[];
 }
 
 export const ReadingViewer = ({ 
@@ -25,7 +29,8 @@ export const ReadingViewer = ({
   title, 
   description, 
   content,
-  level 
+  level,
+  questions
 }: ReadingViewerProps) => {
   
   const handleDownloadPDF = () => {
@@ -95,15 +100,28 @@ export const ReadingViewer = ({
             </Button>
           </div>
         </DialogHeader>
-        <ScrollArea className="pr-4 h-[60vh]">
-          <div className="max-w-none prose prose-sm">
-            {content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="mb-4 text-foreground leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </ScrollArea>
+        <Tabs defaultValue="text" className="h-[60vh]">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="text">Reading</TabsTrigger>
+            <TabsTrigger value="questions">Questions</TabsTrigger>
+          </TabsList>
+          <TabsContent value="text" className="h-[calc(100%-40px)]">
+            <ScrollArea className="pr-4 h-full">
+              <div className="max-w-none prose prose-sm">
+                {content.split('\n\n').map((paragraph, index) => (
+                  <p key={index} className="mb-4 text-foreground leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+          <TabsContent value="questions" className="h-[calc(100%-40px)]">
+            <ScrollArea className="pr-4 h-full">
+              <Quiz questions={questions} />
+            </ScrollArea>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

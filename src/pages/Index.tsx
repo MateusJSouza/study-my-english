@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BookOpen, Sparkles, TrendingUp } from "lucide-react";
-import { readingsData } from "@/data/readings";
+import { readings } from "@/data/readings";
 import { LevelSection } from "@/components/LevelSection";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import heroImage from "@/assets/hero-reading.jpg";
@@ -116,13 +116,13 @@ const Index = () => {
 
         {/* Level Sections */}
         <div className="space-y-20">
-          {Object.entries(readingsData).map(([level, data]) => (
+          {Object.entries(readings).map(([level, levelReadings]) => (
             <LevelSection
               key={level}
               level={level}
-              levelName={data.levelName}
-              readings={data.readings}
-              totalTexts={data.totalTexts}
+              levelName={level}
+              readings={levelReadings}
+              totalTexts={levelReadings.length}
             />
           ))}
         </div>

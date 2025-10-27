@@ -1,11 +1,6 @@
 import { ReadingCard } from "./ReadingCard";
 import { Badge } from "@/components/ui/badge";
-
-interface Reading {
-  title: string;
-  description: string;
-  content: string;
-}
+import { Reading } from "@/data/readings";
 
 interface LevelSectionProps {
   level: string;
@@ -56,6 +51,7 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
             description={reading.description}
             content={reading.content}
             level={level}
+            questions={reading.questions}
           />
         ))}
       </div>
