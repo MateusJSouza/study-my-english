@@ -1,11 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download, Eye } from "lucide-react";
+import { Download, Eye, GripVertical, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { ReadingViewer } from "./ReadingViewer";
 import jsPDF from "jspdf";
-import { Question } from "@/data/readings";
+import { Question, VocabularyItem, BlankItem } from "@/data/readings";
 
 interface ReadingCardProps {
   title: string;
@@ -13,9 +13,23 @@ interface ReadingCardProps {
   level: string;
   content: string;
   questions: Question[];
+  type?: "reading" | "vocabulary" | "fill-blanks";
+  vocabularyItems?: VocabularyItem[];
+  blankItems?: BlankItem[];
+  wordBank?: string[];
 }
 
-export const ReadingCard = ({ title, description, level, content, questions }: ReadingCardProps) => {
+export const ReadingCard = ({ 
+  title, 
+  description, 
+  level, 
+  content, 
+  questions,
+  type = "reading",
+  vocabularyItems,
+  blankItems,
+  wordBank
+}: ReadingCardProps) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   const handleDownloadPDF = () => {
@@ -60,11 +74,31 @@ export const ReadingCard = ({ title, description, level, content, questions }: R
     doc.save(`${title.replace(/\s+/g, '_')}_Level_${level}.pdf`);
   };
 
+  const getTypeIcon = () => {
+    if (type === "vocabulary") return <GripVertical className="w-4 h-4" />;
+    if (type === "fill-blanks") return <BookOpen className="w-4 h-4" />;
+    return null;
+  };
+
+  const getTypeLabel = () => {
+    if (type === "vocabulary") return "Vocabulary";
+    if (type === "fill-blanks") return "Fill-in-blanks";
+    return null;
+  };
+
   return (
     <>
       <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border-border">
         <CardHeader>
-          <Badge variant="outline" className="border-primary text-primary mb-2 w-fit">{level}</Badge>
+          <div className="flex gap-2 mb-2">
+            <Badge variant="outline" className="border-primary text-primary w-fit">{level}</Badge>
+            {type !== "reading" && (
+              <Badge variant="secondary" className="flex items-center gap-1">
+                {getTypeIcon()}
+                {getTypeLabel()}
+              </Badge>
+            )}
+          </div>
           <CardTitle className="text-xl text-card-foreground">{title}</CardTitle>
           <CardDescription className="text-muted-foreground">{description}</CardDescription>
         </CardHeader>
@@ -75,11 +109,13 @@ export const ReadingCard = ({ title, description, level, content, questions }: R
             onClick={() => setIsViewerOpen(true)}
           >
             <Eye className="w-4 h-4 mr-2" />
-            View
+            {type === "reading" ? "View" : "Practice"}
           </Button>
-          <Button variant="outline" onClick={handleDownloadPDF}>
-            <Download className="w-4 h-4" />
-          </Button>
+          {type === "reading" && (
+            <Button variant="outline" onClick={handleDownloadPDF}>
+              <Download className="w-4 h-4" />
+            </Button>
+          )}
         </CardContent>
       </Card>
       
@@ -91,6 +127,10 @@ export const ReadingCard = ({ title, description, level, content, questions }: R
         content={content}
         level={level}
         questions={questions}
+        type={type}
+        vocabularyItems={vocabularyItems}
+        blankItems={blankItems}
+        wordBank={wordBank}
       />
     </>
   );

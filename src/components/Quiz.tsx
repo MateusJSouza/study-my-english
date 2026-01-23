@@ -13,7 +13,7 @@ interface QuizProps {
 
 export const Quiz = ({ questions, onComplete }: QuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState<boolean[]>(new Array(questions.length).fill(false));
@@ -55,10 +55,10 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
   const isCorrect = selectedAnswer === question.correctAnswer;
   const isLastQuestion = currentQuestion === questions.length - 1;
 
-  const getBorderClass = (option: boolean) => {
+  const getBorderClass = (optionIndex: number) => {
     if (!showResult) return "border-border hover:bg-accent";
-    if (option === question.correctAnswer) return "border-green-500 bg-green-50 dark:bg-green-950";
-    if (selectedAnswer === option) return "border-red-500 bg-red-50 dark:bg-red-950";
+    if (optionIndex === question.correctAnswer) return "border-green-500 bg-green-50 dark:bg-green-950";
+    if (selectedAnswer === optionIndex) return "border-red-500 bg-red-50 dark:bg-red-950";
     return "border-border";
   };
 
@@ -81,43 +81,29 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
           
           <RadioGroup
             value={selectedAnswer?.toString()}
-            onValueChange={(value) => setSelectedAnswer(value === "true")}
+            onValueChange={(value) => setSelectedAnswer(parseInt(value))}
             disabled={showResult}
           >
-            <div
-              className={`flex items-center space-x-2 p-3 rounded-md border transition-colors ${getBorderClass(true)}`}
-            >
-              <RadioGroupItem value="true" id="option-true" />
-              <Label
-                htmlFor="option-true"
-                className="flex flex-1 justify-between items-center cursor-pointer"
+            {question.options.map((option, index) => (
+              <div
+                key={index}
+                className={`flex items-center space-x-2 p-3 rounded-md border transition-colors ${getBorderClass(index)}`}
               >
-                <span>True</span>
-                {showResult && question.correctAnswer === true && (
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
-                )}
-                {showResult && selectedAnswer === true && question.correctAnswer !== true && (
-                  <XCircle className="w-5 h-5 text-red-600" />
-                )}
-              </Label>
-            </div>
-            <div
-              className={`flex items-center space-x-2 p-3 rounded-md border transition-colors ${getBorderClass(false)}`}
-            >
-              <RadioGroupItem value="false" id="option-false" />
-              <Label
-                htmlFor="option-false"
-                className="flex flex-1 justify-between items-center cursor-pointer"
-              >
-                <span>Falso</span>
-                {showResult && question.correctAnswer === false && (
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
-                )}
-                {showResult && selectedAnswer === false && question.correctAnswer !== false && (
-                  <XCircle className="w-5 h-5 text-red-600" />
-                )}
-              </Label>
-            </div>
+                <RadioGroupItem value={index.toString()} id={`option-${index}`} />
+                <Label
+                  htmlFor={`option-${index}`}
+                  className="flex flex-1 justify-between items-center cursor-pointer"
+                >
+                  <span>{option}</span>
+                  {showResult && index === question.correctAnswer && (
+                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  )}
+                  {showResult && selectedAnswer === index && index !== question.correctAnswer && (
+                    <XCircle className="w-5 h-5 text-red-600" />
+                  )}
+                </Label>
+              </div>
+            ))}
           </RadioGroup>
         </div>
 
