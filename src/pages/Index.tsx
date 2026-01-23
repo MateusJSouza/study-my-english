@@ -2,7 +2,6 @@ import { useState } from "react";
 import { BookOpen, Sparkles, TrendingUp } from "lucide-react";
 import { readings } from "@/data/readings";
 import { LevelSection } from "@/components/LevelSection";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import heroImage from "@/assets/hero-reading.jpg";
 
 const Index = () => {
@@ -10,10 +9,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header with Theme Toggle */}
-      <header className="fixed top-0 right-0 z-50 p-4">
-        <ThemeToggle />
-      </header>
 
       {/* Hero Section - Redesigned */}
       <section className="relative min-h-[600px] overflow-hidden">

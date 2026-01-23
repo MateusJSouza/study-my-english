@@ -11,7 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download } from "lucide-react";
 import jsPDF from "jspdf";
 import { Quiz } from "./Quiz";
-import { Question } from "@/data/readings";
+import { VocabularyMatch } from "./VocabularyMatch";
+import { FillInBlanks } from "./FillInBlanks";
+import { Question, VocabularyItem, BlankItem } from "@/data/readings";
 
 interface ReadingViewerProps {
   open: boolean;
@@ -21,6 +23,10 @@ interface ReadingViewerProps {
   content: string;
   level: string;
   questions: Question[];
+  type?: "reading" | "vocabulary" | "fill-blanks";
+  vocabularyItems?: VocabularyItem[];
+  blankItems?: BlankItem[];
+  wordBank?: string[];
 }
 
 export const ReadingViewer = ({ 
@@ -30,7 +36,11 @@ export const ReadingViewer = ({
   description, 
   content,
   level,
-  questions
+  questions,
+  type = "reading",
+  vocabularyItems,
+  blankItems,
+  wordBank
 }: ReadingViewerProps) => {
   
   const handleDownloadPDF = () => {
@@ -75,6 +85,55 @@ export const ReadingViewer = ({
     doc.save(`${title.replace(/\s+/g, '_')}_Level_${level}.pdf`);
   };
 
+  // Render vocabulary matching exercise
+  if (type === "vocabulary" && vocabularyItems) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl max-h-[85vh]">
+          <DialogHeader>
+            <div className="flex-1">
+              <DialogTitle className="mb-2 text-2xl">{title}</DialogTitle>
+              <DialogDescription className="text-base">
+                {description}
+              </DialogDescription>
+              <span className="inline-block bg-primary/10 mt-2 px-2 py-1 rounded-md font-medium text-primary text-xs">
+                Level {level}
+              </span>
+            </div>
+          </DialogHeader>
+          <ScrollArea className="h-[60vh] pr-4">
+            <VocabularyMatch items={vocabularyItems} />
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  // Render fill-in-blanks exercise
+  if (type === "fill-blanks" && blankItems && wordBank) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl max-h-[85vh]">
+          <DialogHeader>
+            <div className="flex-1">
+              <DialogTitle className="mb-2 text-2xl">{title}</DialogTitle>
+              <DialogDescription className="text-base">
+                {description}
+              </DialogDescription>
+              <span className="inline-block bg-primary/10 mt-2 px-2 py-1 rounded-md font-medium text-primary text-xs">
+                Level {level}
+              </span>
+            </div>
+          </DialogHeader>
+          <ScrollArea className="h-[60vh] pr-4">
+            <FillInBlanks items={blankItems} wordBank={wordBank} />
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  // Render reading with questions
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[85vh]">
