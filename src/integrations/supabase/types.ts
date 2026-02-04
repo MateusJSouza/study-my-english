@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blank_items: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          reading_id: string
+          sentence: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          reading_id: string
+          sentence: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          reading_id?: string
+          sentence?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blank_items_reading_id_fkey"
+            columns: ["reading_id"]
+            isOneToOne: false
+            referencedRelation: "readings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questions: {
+        Row: {
+          correct_answer: number
+          created_at: string
+          id: string
+          options: string[]
+          question: string
+          reading_id: string
+        }
+        Insert: {
+          correct_answer: number
+          created_at?: string
+          id?: string
+          options: string[]
+          question: string
+          reading_id: string
+        }
+        Update: {
+          correct_answer?: number
+          created_at?: string
+          id?: string
+          options?: string[]
+          question?: string
+          reading_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_reading_id_fkey"
+            columns: ["reading_id"]
+            isOneToOne: false
+            referencedRelation: "readings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      readings: {
+        Row: {
+          content: string
+          created_at: string
+          description: string
+          id: string
+          level: Database["public"]["Enums"]["proficiency_level"]
+          title: string
+          type: Database["public"]["Enums"]["reading_type"]
+          updated_at: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          description: string
+          id?: string
+          level: Database["public"]["Enums"]["proficiency_level"]
+          title: string
+          type?: Database["public"]["Enums"]["reading_type"]
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          description?: string
+          id?: string
+          level?: Database["public"]["Enums"]["proficiency_level"]
+          title?: string
+          type?: Database["public"]["Enums"]["reading_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      vocabulary_items: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          reading_id: string
+          word: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          reading_id: string
+          word: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          reading_id?: string
+          word?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocabulary_items_reading_id_fkey"
+            columns: ["reading_id"]
+            isOneToOne: false
+            referencedRelation: "readings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      word_bank: {
+        Row: {
+          created_at: string
+          id: string
+          reading_id: string
+          word: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reading_id: string
+          word: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reading_id?: string
+          word?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "word_bank_reading_id_fkey"
+            columns: ["reading_id"]
+            isOneToOne: false
+            referencedRelation: "readings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +183,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      proficiency_level: "A1" | "A2" | "B1" | "B2" | "C1"
+      reading_type: "reading" | "vocabulary" | "fill-blanks"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +311,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      proficiency_level: ["A1", "A2", "B1", "B2", "C1"],
+      reading_type: ["reading", "vocabulary", "fill-blanks"],
+    },
   },
 } as const
