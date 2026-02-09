@@ -5,7 +5,7 @@ import { Download, Eye, GripVertical, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { ReadingViewer } from "./ReadingViewer";
 import jsPDF from "jspdf";
-import { Question, VocabularyItem, BlankItem } from "@/data/readings";
+import { Question, VocabularyItem, BlankItem } from "@/hooks/useReadings";
 
 interface ReadingCardProps {
   title: string;

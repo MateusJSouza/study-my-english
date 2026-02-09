@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, TrendingUp } from "lucide-react";
-import { readings } from "@/data/readings";
+import { BookOpen, Sparkles, TrendingUp, Loader2 } from "lucide-react";
+import { useReadings } from "@/hooks/useReadings";
 import { LevelSection } from "@/components/LevelSection";
 import heroImage from "@/assets/hero-reading.jpg";
 
 const Index = () => {
   const [filter, setFilter] = useState<"all" | "new" | "coming">("all");
+  const { data: readings, isLoading, error } = useReadings();
+
+  const totalTexts = readings
+    ? Object.values(readings).reduce((sum, arr) => sum + arr.length, 0)
+    : 0;
 
   return (
     <div className="min-h-screen bg-background">
 
-      {/* Hero Section - Redesigned */}
+      {/* Hero Section */}
       <section className="relative min-h-[600px] overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20 dark:opacity-10"
@@ -49,7 +54,7 @@ const Index = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
               <div className="flex items-center gap-3 mb-2">
                 <BookOpen className="w-8 h-8 text-accent" />
-                <span className="text-3xl font-bold text-white">50+</span>
+                <span className="text-3xl font-bold text-white">{totalTexts}+</span>
               </div>
               <p className="text-white/80 font-medium">Reading Texts</p>
             </div>
@@ -57,7 +62,7 @@ const Index = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
               <div className="flex items-center gap-3 mb-2">
                 <TrendingUp className="w-8 h-8 text-accent" />
-                <span className="text-3xl font-bold text-white">5</span>
+                <span className="text-3xl font-bold text-white">{readings ? Object.keys(readings).length : 0}</span>
               </div>
               <p className="text-white/80 font-medium">Proficiency Levels</p>
             </div>
@@ -109,18 +114,32 @@ const Index = () => {
           </button>
         </div>
 
-        {/* Level Sections */}
-        <div className="space-y-20">
-          {Object.entries(readings).map(([level, levelReadings]) => (
-            <LevelSection
-              key={level}
-              level={level}
-              levelName={level}
-              readings={levelReadings}
-              totalTexts={levelReadings.length}
-            />
-          ))}
-        </div>
+        {/* Loading / Error / Content */}
+        {isLoading && (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center py-20 text-destructive">
+            <p>Failed to load readings. Please try again later.</p>
+          </div>
+        )}
+
+        {readings && (
+          <div className="space-y-20">
+            {Object.entries(readings).map(([level, levelReadings]) => (
+              <LevelSection
+                key={level}
+                level={level}
+                levelName={level}
+                readings={levelReadings}
+                totalTexts={levelReadings.length}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Footer */}
