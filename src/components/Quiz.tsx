@@ -4,7 +4,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, XCircle, RefreshCw } from "lucide-react";
-import { Question } from "@/data/readings";
+import { Question } from "@/hooks/useReadings";
 
 interface QuizProps {
   questions: Question[];

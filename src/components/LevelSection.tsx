@@ -1,6 +1,6 @@
 import { ReadingCard } from "./ReadingCard";
 import { Badge } from "@/components/ui/badge";
-import { Reading } from "@/data/readings";
+import { Reading } from "@/hooks/useReadings";
 
 interface LevelSectionProps {
   level: string;

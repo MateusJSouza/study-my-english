@@ -13,7 +13,7 @@ import jsPDF from "jspdf";
 import { Quiz } from "./Quiz";
 import { VocabularyMatch } from "./VocabularyMatch";
 import { FillInBlanks } from "./FillInBlanks";
-import { Question, VocabularyItem, BlankItem } from "@/data/readings";
+import { Question, VocabularyItem, BlankItem } from "@/hooks/useReadings";
 
 interface ReadingViewerProps {
   open: boolean;
