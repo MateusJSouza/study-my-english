@@ -104,16 +104,111 @@ Os tipos abaixo são extraídos de `src/integrations/supabase/types.ts`. Eles re
 
 ### Views
 
-- **`questions_public`**
+- **`questions_public`** 🔒 **VIEW SEGURA**
   - **Campos principais**:
     - `id: string | null`
     - `reading_id: string | null`
     - `question: string | null`
     - `options: string[] | null`
     - `created_at: string | null`
+    - ⚠️ **IMPORTANTE**: O campo `correct_answer` é **EXCLUÍDO** desta view por segurança
   - **Relacionamentos**:
     - Usa a mesma FK `questions_reading_id_fkey` → `readings.id`.
-  - **Uso**: exposição “segura” das questões para consumo público, conforme as políticas definidas nas migrações.
+  - **Uso**: Exposição segura das questões para consumo público. Esta view permite que usuários vejam as perguntas e opções sem ter acesso às respostas corretas, prevenindo trapaça.
+  - **Segurança**:
+    - ✅ O campo `correct_answer` NÃO está presente nesta view
+    - ✅ A tabela base `questions` tem RLS que nega SELECT direto para não-admins
+    - ✅ Verificação de respostas é feita server-side via função Edge `check-answers`
+
+---
+
+## 🔒 Segurança de Questões e Respostas
+
+### Problema de Segurança Resolvido
+
+A tabela `questions` contém respostas corretas (`correct_answer`), o que poderia permitir trapaça se exposta diretamente. A arquitetura implementa múltiplas camadas de segurança:
+
+#### 1. **View Pública Segura** (`questions_public`)
+- **Definição**: Criada na migração `20260210120759_3e57b28d-edd1-4488-aa91-af110f11e08f.sql`
+- **Campos expostos**: `id, reading_id, question, options, created_at`
+- **Campo OMITIDO**: `correct_answer` (não está presente na view)
+- **Acesso**: `GRANT SELECT` para `anon` e `authenticated`
+
+```sql
+CREATE VIEW public.questions_public
+WITH (security_invoker = on) AS
+  SELECT id, reading_id, question, options, created_at
+  FROM public.questions;
+```
+
+#### 2. **Row Level Security (RLS) na Tabela Base**
+- **Política**: "No direct public access to questions"
+- **Restrição**: SELECT direto na tabela `questions` é permitido APENAS para admins
+- **Implementação**: `USING (public.has_role(auth.uid(), 'admin'))`
+
+```sql
+CREATE POLICY "No direct public access to questions"
+  ON public.questions FOR SELECT
+  USING (public.has_role(auth.uid(), 'admin'));
+```
+
+#### 3. **Validação Server-Side**
+- **Função Edge**: `check-answers` (`supabase/functions/check-answers/index.ts`)
+- **Fluxo seguro**:
+  1. Frontend envia `questionId` e `selectedAnswer` para a função Edge
+  2. Função usa `SUPABASE_SERVICE_ROLE_KEY` para acessar `correct_answer`
+  3. Comparação acontece no servidor
+  4. Retorna apenas `isCorrect: boolean` e `correctAnswer: number`
+- **Vantagem**: Cliente nunca tem acesso direto às respostas corretas
+
+### Como o Frontend Deve Usar
+
+❌ **NUNCA FAÇA ISSO** (não funciona e não é seguro):
+```typescript
+// Isso retornará undefined para correct_answer ou dará erro
+const { data } = await supabase
+  .from('questions')
+  .select('correct_answer')
+  .eq('id', questionId);
+```
+
+✅ **FAÇA ASSIM** (seguro e correto):
+```typescript
+// 1. Buscar questões (sem respostas)
+const { data } = await supabase
+  .from('questions_public')  // Usa a view segura
+  .select('*')
+  .eq('reading_id', readingId);
+
+// 2. Validar resposta via função Edge
+const response = await fetch(
+  `${SUPABASE_URL}/functions/v1/check-answers`,
+  {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      questionId: 'abc123',
+      selectedAnswer: 2
+    })
+  }
+);
+const { isCorrect, correctAnswer } = await response.json();
+```
+
+### Manutenção e Auditoria
+
+⚠️ **ATENÇÃO AO MODIFICAR**:
+- **Nunca adicione** `correct_answer` à view `questions_public`
+- **Não remova** a política RLS "No direct public access to questions"
+- **Teste sempre** que modificar permissões:
+  - Com usuário anon: não deve ver `correct_answer`
+  - Com admin: deve ver `correct_answer`
+- **Use sempre** a função Edge `check-answers` para validação
+
+---
 
 ### Funções
 
@@ -222,12 +317,27 @@ npx supabase gen types typescript --project-id <project-id> > src/integrations/s
 
 - **Centralizar queries**:
   - Use hooks como `useReadings` e crie novos hooks em `src/hooks/` para cada tipo de dado (por exemplo, perguntas, vocabulário), sempre usando o cliente tipado.
-- **RLS e segurança**:
-  - Confirme políticas nas migrações sempre que expuser dados sensíveis.
-  - Use views como `questions_public` para limitar campos expostos quando necessário.
+
+- **RLS e segurança** 🔒:
+  - ⚠️ **NUNCA exponha respostas corretas** diretamente ao cliente
+  - Confirme políticas nas migrações sempre que expuser dados sensíveis
+  - Use views (como `questions_public`) para limitar campos expostos quando necessário
+  - **Sempre valide dados sensíveis server-side** via Edge Functions
+  - Revise as políticas RLS após cada migração que altere permissões
+  - Teste com diferentes níveis de usuário (anon, authenticated, admin)
+
+- **Queries de questões**:
+  - ✅ **Use `questions_public`** para listar questões no frontend
+  - ✅ **Use função Edge `check-answers`** para validar respostas
+  - ❌ **Nunca acesse `questions` diretamente** do frontend
+  - ❌ **Nunca confie em validação apenas client-side**
+
 - **Organização de funções Edge**:
-  - Agrupe funções por domínio (ex.: correção de exercícios, administração, etc.).
-  - Documente entrada/saída de cada função neste arquivo ou em arquivos específicos.
+  - Agrupe funções por domínio (ex.: correção de exercícios, administração, etc.)
+  - Documente entrada/saída de cada função neste arquivo ou em arquivos específicos
+  - Use `SUPABASE_SERVICE_ROLE_KEY` quando precisar de acesso elevado (como ler `correct_answer`)
+
 - **Manter este documento atualizado**:
-  - Sempre que criar novas tabelas, funções, enums ou Edge Functions, adicione uma breve descrição aqui.
+  - Sempre que criar novas tabelas, funções, enums ou Edge Functions, adicione uma breve descrição aqui
+  - Documente decisões de segurança importantes
 
