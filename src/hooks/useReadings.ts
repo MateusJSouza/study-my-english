@@ -19,7 +19,6 @@ export interface BlankItem {
   sentence: string;
   blank: string;
   answer: string;
-  imageUrl?: string;
 }
 
 export interface Reading {
@@ -31,6 +30,7 @@ export interface Reading {
   vocabularyItems?: VocabularyItem[];
   blankItems?: BlankItem[];
   wordBank?: string[];
+  imageUrl?: string;
 }
 
 export function useReadings() {
@@ -105,7 +105,6 @@ export function useReadings() {
                 sentence: b.sentence,
                 blank: "______",
                 answer: b.answer,
-                imageUrl: b.image_url || undefined,
               }))
             : undefined;
 
@@ -120,6 +119,7 @@ export function useReadings() {
           vocabularyItems,
           blankItems,
           wordBank,
+          imageUrl: r.image_url || undefined,
         };
 
         if (!grouped[r.level]) grouped[r.level] = [];

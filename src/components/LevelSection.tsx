@@ -56,6 +56,7 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
             vocabularyItems={reading.vocabularyItems}
             blankItems={reading.blankItems}
             wordBank={reading.wordBank}
+            imageUrl={reading.imageUrl}
           />
         ))}
       </div>

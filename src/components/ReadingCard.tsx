@@ -17,18 +17,20 @@ interface ReadingCardProps {
   vocabularyItems?: VocabularyItem[];
   blankItems?: BlankItem[];
   wordBank?: string[];
+  imageUrl?: string;
 }
 
-export const ReadingCard = ({ 
-  title, 
-  description, 
-  level, 
-  content, 
+export const ReadingCard = ({
+  title,
+  description,
+  level,
+  content,
   questions,
   type = "reading",
   vocabularyItems,
   blankItems,
-  wordBank
+  wordBank,
+  imageUrl
 }: ReadingCardProps) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
@@ -131,6 +133,7 @@ export const ReadingCard = ({
         vocabularyItems={vocabularyItems}
         blankItems={blankItems}
         wordBank={wordBank}
+        imageUrl={imageUrl}
       />
     </>
   );

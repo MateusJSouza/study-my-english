@@ -27,20 +27,22 @@ interface ReadingViewerProps {
   vocabularyItems?: VocabularyItem[];
   blankItems?: BlankItem[];
   wordBank?: string[];
+  imageUrl?: string;
 }
 
-export const ReadingViewer = ({ 
-  open, 
-  onOpenChange, 
-  title, 
-  description, 
+export const ReadingViewer = ({
+  open,
+  onOpenChange,
+  title,
+  description,
   content,
   level,
   questions,
   type = "reading",
   vocabularyItems,
   blankItems,
-  wordBank
+  wordBank,
+  imageUrl
 }: ReadingViewerProps) => {
   
   const handleDownloadPDF = () => {
@@ -126,7 +128,7 @@ export const ReadingViewer = ({
             </div>
           </DialogHeader>
           <ScrollArea className="h-[60vh] pr-4">
-            <FillInBlanks items={blankItems} wordBank={wordBank} />
+            <FillInBlanks items={blankItems} wordBank={wordBank} imageUrl={imageUrl} />
           </ScrollArea>
         </DialogContent>
       </Dialog>

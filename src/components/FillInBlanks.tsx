@@ -14,9 +14,10 @@ interface FillInBlanksProps {
   items: BlankItem[];
   wordBank: string[];
   title?: string;
+  imageUrl?: string;
 }
 
-export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
+export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksProps) => {
   const [shuffledWords] = useState<string[]>(() => 
     [...wordBank].sort(() => Math.random() - 0.5)
   );
@@ -83,7 +84,21 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
   return (
     <div className="space-y-6">
       {title && <h3 className="text-xl font-bold text-foreground mb-4">{title}</h3>}
-      
+
+      {/* Exercise Image */}
+      {imageUrl && (
+        <div className="rounded-lg overflow-hidden border border-border">
+          <img
+            src={imageUrl}
+            alt="Exercise context"
+            className="w-full max-h-[400px] object-contain bg-muted"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </div>
+      )}
+
       {/* Word Bank */}
       <Card className="p-4 bg-muted/50">
         <p className="text-sm text-muted-foreground mb-3 font-medium">
@@ -118,18 +133,6 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
                 : ''
             }`}
           >
-            {item.imageUrl && (
-              <div className="mb-3 rounded-lg overflow-hidden border border-border">
-                <img
-                  src={item.imageUrl}
-                  alt={`Context for question ${item.id}`}
-                  className="w-full max-h-[200px] object-contain bg-muted"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-            )}
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-muted-foreground font-medium">{item.id}.</span>
               {item.sentence.split(item.blank).map((part, idx, arr) => (
