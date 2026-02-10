@@ -89,12 +89,32 @@ npm run preview      # Preview do build de produção
 
 ## Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz com:
+### Para Projetos Lovable (Este Projeto)
+
+⚠️ **Importante**: Este projeto usa **Lovable**, que **requer** o arquivo `.env` no repositório.
+
+O arquivo `.env` está commitado e contém apenas chaves públicas seguras:
+- `VITE_SUPABASE_PUBLISHABLE_KEY` (anon key) - segura para exposição
+- `VITE_SUPABASE_URL` - URL pública
+- `VITE_SUPABASE_PROJECT_ID` - ID público
+
+**Por que isso é seguro?**
+- A `PUBLISHABLE_KEY` é projetada para ser pública (usada no frontend)
+- Protegida por Row Level Security (RLS) no Supabase
+- `SERVICE_ROLE_KEY` nunca é armazenada no `.env` (apenas em Edge Functions)
+- Prática padrão para projetos Lovable
+
+### Para Desenvolvimento Local (fora do Lovable)
+
+Se você está desenvolvendo localmente:
 
 ```env
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+VITE_SUPABASE_PROJECT_ID=your_project_id
 ```
+
+Use `.env.local` para sobrescrever valores localmente (ignorado pelo Git).
 
 ## Componentes Principais
 
