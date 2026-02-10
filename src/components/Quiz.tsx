@@ -109,7 +109,20 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
       <CardContent className="space-y-4">
         <div className="space-y-4">
           <h3 className="font-medium text-lg">{question.question}</h3>
-          
+
+          {question.imageUrl && (
+            <div className="rounded-lg overflow-hidden border border-border">
+              <img
+                src={question.imageUrl}
+                alt="Question context"
+                className="w-full max-h-[300px] object-contain bg-muted"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+          )}
+
           <RadioGroup
             value={selectedAnswer?.toString()}
             onValueChange={(value) => setSelectedAnswer(parseInt(value))}

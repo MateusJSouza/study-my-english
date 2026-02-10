@@ -5,6 +5,7 @@ export interface Question {
   id: string;
   question: string;
   options: string[];
+  imageUrl?: string;
 }
 
 export interface VocabularyItem {
@@ -83,6 +84,7 @@ export function useReadings() {
             id: q.id!,
             question: q.question!,
             options: q.options!,
+            imageUrl: q.image_url || undefined,
           }));
 
         const vocabularyItems: VocabularyItem[] | undefined =
