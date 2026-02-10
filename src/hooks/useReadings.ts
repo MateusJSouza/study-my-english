@@ -77,11 +77,13 @@ export function useReadings() {
       const grouped: Record<string, Reading[]> = {};
 
       for (const r of readingsRes.data) {
-        const questions: Question[] = (questionsMap.get(r.id) ?? []).map((q) => ({
-          id: q.id,
-          question: q.question,
-          options: q.options,
-        }));
+        const questions: Question[] = (questionsMap.get(r.id) ?? [])
+          .filter((q) => q.id && q.question && q.options) // Filter out invalid questions
+          .map((q) => ({
+            id: q.id!,
+            question: q.question!,
+            options: q.options!,
+          }));
 
         const vocabularyItems: VocabularyItem[] | undefined =
           r.type === "vocabulary"

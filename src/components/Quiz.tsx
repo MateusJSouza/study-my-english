@@ -22,6 +22,17 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState(false);
 
+  // Handle empty questions array
+  if (!questions || questions.length === 0) {
+    return (
+      <Card className="w-full">
+        <CardContent className="p-6">
+          <p className="text-muted-foreground text-center">No questions available for this reading.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const handleSubmit = async () => {
     if (selectedAnswer === null) return;
     setIsChecking(true);
