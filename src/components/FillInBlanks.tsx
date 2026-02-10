@@ -25,11 +25,20 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<Record<number, boolean>>({});
 
-  const handleDragStart = (word: string) => {
+  const handleDragStart = (e: React.DragEvent, word: string) => {
     setDraggedWord(word);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', word);
   };
 
-  const handleDrop = (itemId: number) => {
+  const handleDragEnd = () => {
+    setDraggedWord(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, itemId: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (draggedWord) {
       const newAnswers = { ...answers };
       newAnswers[itemId] = draggedWord;
@@ -40,6 +49,8 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = 'move';
   };
 
   const removeAnswer = (itemId: number) => {
@@ -83,8 +94,9 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
             <div
               key={`${word}-${idx}`}
               draggable
-              onDragStart={() => handleDragStart(word)}
-              className="flex items-center gap-1 px-3 py-2 bg-primary text-primary-foreground rounded-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 transition-colors font-medium text-sm"
+              onDragStart={(e) => handleDragStart(e, word)}
+              onDragEnd={handleDragEnd}
+              className="flex items-center gap-1 px-3 py-2 bg-primary text-primary-foreground rounded-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 transition-colors font-medium text-sm select-none"
             >
               <GripVertical className="w-4 h-4 opacity-70" />
               {word}
@@ -113,14 +125,14 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
                   <span>{part}</span>
                   {idx < arr.length - 1 && (
                     <span
-                      onDrop={() => handleDrop(item.id)}
+                      onDrop={(e) => handleDrop(e, item.id)}
                       onDragOver={handleDragOver}
                       onClick={() => !showResults && answers[item.id] && removeAnswer(item.id)}
-                      className={`inline-flex items-center gap-1 min-w-[80px] px-2 py-1 rounded border-2 border-dashed transition-all ${
+                      className={`inline-flex items-center justify-center gap-1 min-w-[100px] min-h-[36px] px-3 py-2 rounded border-2 border-dashed transition-all ${
                         answers[item.id]
-                          ? 'border-primary bg-primary/10 cursor-pointer'
-                          : 'border-muted-foreground/30'
-                      }`}
+                          ? 'border-primary bg-primary/10 cursor-pointer hover:bg-primary/20'
+                          : 'border-muted-foreground/30 hover:border-primary/50 hover:bg-primary/5'
+                      } ${draggedWord ? 'ring-2 ring-primary/20' : ''}`}
                     >
                       {answers[item.id] ? (
                         <>
