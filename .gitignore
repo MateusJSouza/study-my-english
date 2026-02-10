@@ -13,7 +13,8 @@ dist-ssr
 *.local
 
 # Environment variables (sensitive data)
-.env
+# Note: .env is tracked for Lovable integration
+# Only contains PUBLISHABLE_KEY which is safe to expose
 .env.local
 .env.production
 .env.development
