@@ -130,16 +130,19 @@ A tabela `questions` contém respostas corretas (`correct_answer`), o que poderi
 
 #### 1. **View Pública Segura** (`questions_public`)
 - **Definição**: Criada na migração `20260210120759_3e57b28d-edd1-4488-aa91-af110f11e08f.sql`
+- **Correção**: Migração `20260210140000_fix_questions_public_view.sql` (remove `security_invoker`)
 - **Campos expostos**: `id, reading_id, question, options, created_at`
 - **Campo OMITIDO**: `correct_answer` (não está presente na view)
 - **Acesso**: `GRANT SELECT` para `anon` e `authenticated`
 
 ```sql
-CREATE VIEW public.questions_public
-WITH (security_invoker = on) AS
+-- View correta (security_definer por padrão)
+CREATE VIEW public.questions_public AS
   SELECT id, reading_id, question, options, created_at
   FROM public.questions;
 ```
+
+**⚠️ Problema Resolvido:** A view original tinha `security_invoker = on`, o que fazia com que ela herdasse as permissões do usuário fazendo a query. Como a tabela base tem RLS bloqueando não-admins, a view também era bloqueada. A correção remove `security_invoker`, usando `security_definer` por padrão (permissões do dono da view = superuser).
 
 #### 2. **Row Level Security (RLS) na Tabela Base**
 - **Política**: "No direct public access to questions"
