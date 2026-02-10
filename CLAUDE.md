@@ -38,6 +38,12 @@ src/
 └── main.tsx             # Entry point
 ```
 
+Além deste arquivo na raiz, existem documentações específicas em:
+
+- `supabase/CLAUDE.md` – detalhes de banco de dados, funções e migrações do Supabase.
+- `src/hooks/CLAUDE.md` – descrição dos hooks personalizados e exemplos de uso.
+- `src/integrations/CLAUDE.md` – visão geral das integrações externas (especialmente Supabase).
+
 ## Padrões de Código
 
 ### Componentes React
