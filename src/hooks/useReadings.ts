@@ -19,6 +19,7 @@ export interface BlankItem {
   sentence: string;
   blank: string;
   answer: string;
+  imageUrl?: string;
 }
 
 export interface Reading {
@@ -104,6 +105,7 @@ export function useReadings() {
                 sentence: b.sentence,
                 blank: "______",
                 answer: b.answer,
+                imageUrl: b.image_url || undefined,
               }))
             : undefined;
 

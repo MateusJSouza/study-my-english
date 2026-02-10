@@ -108,7 +108,7 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
       {/* Sentences */}
       <div className="space-y-3">
         {items.map((item) => (
-          <Card 
+          <Card
             key={item.id}
             className={`p-3 transition-all ${
               showResults
@@ -118,6 +118,18 @@ export const FillInBlanks = ({ items, wordBank, title }: FillInBlanksProps) => {
                 : ''
             }`}
           >
+            {item.imageUrl && (
+              <div className="mb-3 rounded-lg overflow-hidden border border-border">
+                <img
+                  src={item.imageUrl}
+                  alt={`Context for question ${item.id}`}
+                  className="w-full max-h-[200px] object-contain bg-muted"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-muted-foreground font-medium">{item.id}.</span>
               {item.sentence.split(item.blank).map((part, idx, arr) => (
