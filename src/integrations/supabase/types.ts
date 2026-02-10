@@ -195,7 +195,38 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      questions_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          options: string[] | null
+          question: string | null
+          reading_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          options?: string[] | null
+          question?: string | null
+          reading_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          options?: string[] | null
+          question?: string | null
+          reading_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_reading_id_fkey"
+            columns: ["reading_id"]
+            isOneToOne: false
+            referencedRelation: "readings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       has_role: {
