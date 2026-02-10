@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface Question {
+  id: string;
   question: string;
   options: string[];
-  correctAnswer: number;
 }
 
 export interface VocabularyItem {
@@ -38,7 +38,7 @@ export function useReadings() {
       // Fetch all data in parallel
       const [readingsRes, questionsRes, vocabRes, blanksRes, wordBankRes] = await Promise.all([
         supabase.from("readings").select("*").order("created_at"),
-        supabase.from("questions").select("*"),
+        supabase.from("questions_public").select("*"),
         supabase.from("vocabulary_items").select("*"),
         supabase.from("blank_items").select("*"),
         supabase.from("word_bank").select("*"),
@@ -78,9 +78,9 @@ export function useReadings() {
 
       for (const r of readingsRes.data) {
         const questions: Question[] = (questionsMap.get(r.id) ?? []).map((q) => ({
+          id: q.id,
           question: q.question,
           options: q.options,
-          correctAnswer: q.correct_answer,
         }));
 
         const vocabularyItems: VocabularyItem[] | undefined =

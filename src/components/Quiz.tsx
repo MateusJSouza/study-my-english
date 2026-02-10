@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle2, XCircle, RefreshCw } from "lucide-react";
+import { CheckCircle2, XCircle, RefreshCw, Loader2 } from "lucide-react";
 import { Question } from "@/hooks/useReadings";
+import { supabase } from "@/integrations/supabase/client";
 
 interface QuizProps {
   questions: Question[];
@@ -15,22 +16,40 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
   const [score, setScore] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState<boolean[]>(new Array(questions.length).fill(false));
+  const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
+  const [isCorrect, setIsCorrect] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (selectedAnswer === null) return;
+    setIsChecking(true);
 
-    const isCorrect = selectedAnswer === questions[currentQuestion].correctAnswer;
-    if (isCorrect && !answeredQuestions[currentQuestion]) {
-      setScore(score + 1);
+    try {
+      const { data, error } = await supabase.functions.invoke("check-answers", {
+        body: { questionId: questions[currentQuestion].id, selectedAnswer },
+      });
+
+      if (error) throw error;
+
+      const correct = data.isCorrect as boolean;
+      setIsCorrect(correct);
+      setCorrectAnswer(data.correctAnswer as number);
+
+      if (correct && !answeredQuestions[currentQuestion]) {
+        setScore(score + 1);
+      }
+
+      const newAnsweredQuestions = [...answeredQuestions];
+      newAnsweredQuestions[currentQuestion] = true;
+      setAnsweredQuestions(newAnsweredQuestions);
+      setShowResult(true);
+    } catch (err) {
+      console.error("Error checking answer:", err);
+    } finally {
+      setIsChecking(false);
     }
-
-    const newAnsweredQuestions = [...answeredQuestions];
-    newAnsweredQuestions[currentQuestion] = true;
-    setAnsweredQuestions(newAnsweredQuestions);
-
-    setShowResult(true);
   };
 
   const handleNext = () => {
@@ -38,6 +57,7 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
       setShowResult(false);
+      setCorrectAnswer(null);
     } else {
       onComplete?.();
     }
@@ -49,15 +69,15 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
     setShowResult(false);
     setScore(0);
     setAnsweredQuestions(new Array(questions.length).fill(false));
+    setCorrectAnswer(null);
   };
 
   const question = questions[currentQuestion];
-  const isCorrect = selectedAnswer === question.correctAnswer;
   const isLastQuestion = currentQuestion === questions.length - 1;
 
   const getBorderClass = (optionIndex: number) => {
     if (!showResult) return "border-border hover:bg-accent";
-    if (optionIndex === question.correctAnswer) return "border-green-500 bg-green-50 dark:bg-green-950";
+    if (correctAnswer !== null && optionIndex === correctAnswer) return "border-green-500 bg-green-50 dark:bg-green-950";
     if (selectedAnswer === optionIndex) return "border-red-500 bg-red-50 dark:bg-red-950";
     return "border-border";
   };
@@ -82,7 +102,7 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
           <RadioGroup
             value={selectedAnswer?.toString()}
             onValueChange={(value) => setSelectedAnswer(parseInt(value))}
-            disabled={showResult}
+            disabled={showResult || isChecking}
           >
             {question.options.map((option, index) => (
               <div
@@ -95,10 +115,10 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
                   className="flex flex-1 justify-between items-center cursor-pointer"
                 >
                   <span>{option}</span>
-                  {showResult && index === question.correctAnswer && (
+                  {showResult && correctAnswer !== null && index === correctAnswer && (
                     <CheckCircle2 className="w-5 h-5 text-green-600" />
                   )}
-                  {showResult && selectedAnswer === index && index !== question.correctAnswer && (
+                  {showResult && selectedAnswer === index && correctAnswer !== null && index !== correctAnswer && (
                     <XCircle className="w-5 h-5 text-red-600" />
                   )}
                 </Label>
@@ -125,10 +145,10 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
           {!showResult ? (
             <Button
               onClick={handleSubmit}
-              disabled={selectedAnswer === null}
+              disabled={selectedAnswer === null || isChecking}
               className="flex-1"
             >
-              Submit Answer
+              {isChecking ? <><Loader2 className="mr-2 w-4 h-4 animate-spin" /> Checking...</> : "Submit Answer"}
             </Button>
           ) : (
             <>
