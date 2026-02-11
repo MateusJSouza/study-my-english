@@ -17,7 +17,6 @@ export interface VocabularyItem {
 export interface BlankItem {
   id: number;
   sentence: string;
-  blank: string;
   answer: string;
 }
 
@@ -103,7 +102,6 @@ export function useReadings() {
             ? rawBlanks.map((b, i) => ({
                 id: i + 1,
                 sentence: b.sentence,
-                blank: "______",
                 answer: b.answer,
               }))
             : undefined;

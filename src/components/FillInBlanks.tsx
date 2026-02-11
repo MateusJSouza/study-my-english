@@ -6,7 +6,6 @@ import { CheckCircle2, XCircle, RefreshCw, GripVertical } from "lucide-react";
 export interface BlankItem {
   id: number;
   sentence: string;
-  blank: string;
   answer: string;
 }
 
@@ -135,7 +134,7 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
           >
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-muted-foreground font-medium">{item.id}.</span>
-              {item.sentence.split(item.blank).map((part, idx, arr) => (
+              {item.sentence.split(/_{2,}/).map((part, idx, arr) => (
                 <span key={idx} className="flex items-center gap-2">
                   <span>{part}</span>
                   {idx < arr.length - 1 && (
