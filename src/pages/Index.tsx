@@ -43,9 +43,9 @@ const Index = () => {
               <a href="#about-us" className="bg-accent text-accent-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:scale-105 transition-transform shadow-lg inline-block">
                 About Us
               </a>
-              <button className="bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-colors">
+              <a href="#levels" className="bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-colors inline-block">
                 Browse Levels
-              </button>
+              </a>
             </div>
           </div>
 
@@ -79,7 +79,7 @@ const Index = () => {
       </section>
 
       {/* Main Content */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section id="levels" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-4">
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-16">
           <button
