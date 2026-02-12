@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, TrendingUp, Loader2 } from "lucide-react";
+import { BookOpen, Sparkles, TrendingUp, Loader2, Users } from "lucide-react";
 import { useReadings } from "@/hooks/useReadings";
 import { LevelSection } from "@/components/LevelSection";
 import heroImage from "@/assets/hero-reading.jpg";
@@ -40,9 +40,9 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-accent text-accent-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:scale-105 transition-transform shadow-lg">
-                Start Learning Now
-              </button>
+              <a href="#about-us" className="bg-accent text-accent-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:scale-105 transition-transform shadow-lg inline-block">
+                About Us
+              </a>
               <button className="bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-colors">
                 Browse Levels
               </button>
@@ -142,13 +142,54 @@ const Index = () => {
         )}
       </section>
 
+      {/* About Us */}
+      <section id="about-us" className="bg-muted/50 border-t border-border mt-20 md:mt-32 py-12 md:py-20 scroll-mt-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 md:mb-14">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <Users className="w-6 h-6 text-primary" />
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">About Us</h2>
+            </div>
+            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              This platform was created by <span className="font-semibold text-foreground">The English Club</span> to help English learners practice reading through engaging, level-based texts and interactive exercises — making study more accessible and effective for everyone.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                <span className="text-2xl">🎓</span>
+              </div>
+              <h4 className="font-semibold text-foreground">Erick Jr</h4>
+              <p className="text-sm text-muted-foreground mt-1">English Teacher & Project Creator</p>
+            </div>
+
+            <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                <span className="text-2xl">💻</span>
+              </div>
+              <h4 className="font-semibold text-foreground">Mateus Jesus</h4>
+              <p className="text-sm text-muted-foreground mt-1">Web Developer</p>
+            </div>
+
+            <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                <span className="text-2xl">💻</span>
+              </div>
+              <h4 className="font-semibold text-foreground">Wemerson Santos</h4>
+              <p className="text-sm text-muted-foreground mt-1">Web Developer</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="bg-card border-t border-border mt-32 py-12">
+      <footer className="bg-card border-t border-border py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-foreground mb-2">English Reading Practice</h3>
-            <p className="text-muted-foreground mb-6">Improve your English, one text at a time</p>
-            <p className="text-sm text-muted-foreground">&copy; 2025 All rights reserved.</p>
+            <h3 className="text-lg font-bold text-foreground mb-1">The English Club</h3>
+            <p className="text-muted-foreground text-sm mb-4">Improve your English, one text at a time</p>
+            <p className="text-xs text-muted-foreground">&copy; 2025 All rights reserved.</p>
           </div>
         </div>
       </footer>
