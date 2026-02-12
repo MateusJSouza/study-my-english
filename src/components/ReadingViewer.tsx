@@ -91,7 +91,7 @@ export const ReadingViewer = ({
   if (type === "vocabulary" && vocabularyItems) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-4xl max-h-[85vh]">
+        <DialogContent className="max-w-[95vw] md:max-w-4xl max-h-[90vh] md:max-h-[85vh]">
           <DialogHeader>
             <div className="flex-1">
               <DialogTitle className="mb-2 text-2xl">{title}</DialogTitle>
@@ -103,7 +103,7 @@ export const ReadingViewer = ({
               </span>
             </div>
           </DialogHeader>
-          <ScrollArea className="h-[60vh] pr-4">
+          <ScrollArea className="h-[50vh] md:h-[60vh] pr-4">
             <VocabularyMatch items={vocabularyItems} />
           </ScrollArea>
         </DialogContent>
@@ -115,7 +115,7 @@ export const ReadingViewer = ({
   if (type === "fill-blanks" && blankItems && wordBank) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-4xl max-h-[85vh]">
+        <DialogContent className="max-w-[95vw] md:max-w-4xl max-h-[90vh] md:max-h-[85vh]">
           <DialogHeader>
             <div className="flex-1">
               <DialogTitle className="mb-2 text-2xl">{title}</DialogTitle>
@@ -127,7 +127,7 @@ export const ReadingViewer = ({
               </span>
             </div>
           </DialogHeader>
-          <ScrollArea className="h-[60vh] pr-4">
+          <ScrollArea className="h-[50vh] md:h-[60vh] pr-4">
             <FillInBlanks items={blankItems} wordBank={wordBank} imageUrl={imageUrl} />
           </ScrollArea>
         </DialogContent>
@@ -138,7 +138,7 @@ export const ReadingViewer = ({
   // Render reading with questions
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[85vh]">
+      <DialogContent className="max-w-[95vw] md:max-w-4xl max-h-[90vh] md:max-h-[85vh]">
         <DialogHeader>
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1">
@@ -161,7 +161,7 @@ export const ReadingViewer = ({
             </Button>
           </div>
         </DialogHeader>
-        <Tabs defaultValue="text" className="h-[60vh]">
+        <Tabs defaultValue="text" className="h-[50vh] md:h-[60vh]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="text">Reading</TabsTrigger>
             <TabsTrigger value="questions">Questions</TabsTrigger>

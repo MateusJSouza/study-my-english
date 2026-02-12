@@ -16,41 +16,41 @@ const Index = () => {
     <div className="min-h-screen bg-background">
 
       {/* Hero Section */}
-      <section className="relative min-h-[600px] overflow-hidden">
+      <section className="relative min-h-[400px] md:min-h-[600px] overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20 dark:opacity-10"
           style={{ backgroundImage: `url(${heroImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent opacity-90 dark:opacity-95" />
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 md:pt-32 md:pb-20">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-background/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
               <Sparkles className="w-4 h-4 text-accent" />
               <span className="text-sm font-medium text-white">Master English Through Reading</span>
             </div>
             
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 text-white leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
               English Reading
               <span className="block text-accent">Practice</span>
             </h1>
             
-            <p className="text-xl md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-2xl mb-8 md:mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
               Progressive learning from A1 to C1 with engaging texts and instant PDF downloads
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-accent text-accent-foreground px-8 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-lg">
+              <button className="bg-accent text-accent-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:scale-105 transition-transform shadow-lg">
                 Start Learning Now
               </button>
-              <button className="bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
+              <button className="bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-colors">
                 Browse Levels
               </button>
             </div>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-10 md:mt-16 max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
               <div className="flex items-center gap-3 mb-2">
                 <BookOpen className="w-8 h-8 text-accent" />

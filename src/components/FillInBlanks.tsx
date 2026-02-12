@@ -17,11 +17,12 @@ interface FillInBlanksProps {
 }
 
 export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksProps) => {
-  const [shuffledWords] = useState<string[]>(() => 
+  const [shuffledWords] = useState<string[]>(() =>
     [...wordBank].sort(() => Math.random() - 0.5)
   );
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [draggedWord, setDraggedWord] = useState<string | null>(null);
+  const [selectedWord, setSelectedWord] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<Record<number, boolean>>({});
 
@@ -53,6 +54,25 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
     e.dataTransfer.dropEffect = 'move';
   };
 
+  // Tap-to-select for mobile
+  const handleWordTap = (word: string) => {
+    setSelectedWord(prev => prev === word ? null : word);
+  };
+
+  const handleBlankTap = (itemId: number) => {
+    if (showResults) return;
+    if (answers[itemId]) {
+      removeAnswer(itemId);
+      return;
+    }
+    if (selectedWord) {
+      const newAnswers = { ...answers };
+      newAnswers[itemId] = selectedWord;
+      setAnswers(newAnswers);
+      setSelectedWord(null);
+    }
+  };
+
   const removeAnswer = (itemId: number) => {
     const newAnswers = { ...answers };
     delete newAnswers[itemId];
@@ -72,6 +92,7 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
 
   const resetGame = useCallback(() => {
     setAnswers({});
+    setSelectedWord(null);
     setShowResults(false);
     setResults({});
   }, []);
@@ -81,7 +102,7 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
   const availableWords = shuffledWords.filter(word => !usedWords.includes(word));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {title && <h3 className="text-xl font-bold text-foreground mb-4">{title}</h3>}
 
       {/* Exercise Image */}
@@ -90,7 +111,7 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
           <img
             src={imageUrl}
             alt="Exercise context"
-            className="w-full max-h-[400px] object-contain bg-muted"
+            className="w-full max-h-[300px] md:max-h-[400px] object-contain bg-muted"
             onError={(e) => {
               e.currentTarget.style.display = 'none';
             }}
@@ -99,9 +120,9 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
       )}
 
       {/* Word Bank */}
-      <Card className="p-4 bg-muted/50">
+      <Card className="p-3 md:p-4 bg-muted/50">
         <p className="text-sm text-muted-foreground mb-3 font-medium">
-          Drag the words to complete the sentences:
+          Drag or tap the words to complete the sentences:
         </p>
         <div className="flex flex-wrap gap-2">
           {availableWords.map((word, idx) => (
@@ -110,9 +131,14 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
               draggable
               onDragStart={(e) => handleDragStart(e, word)}
               onDragEnd={handleDragEnd}
-              className="flex items-center gap-1 px-3 py-2 bg-primary text-primary-foreground rounded-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 transition-colors font-medium text-sm select-none"
+              onClick={() => handleWordTap(word)}
+              className={`flex items-center gap-1 px-3 py-2 rounded-lg cursor-pointer active:scale-95 transition-all font-medium text-sm select-none ${
+                selectedWord === word
+                  ? 'bg-accent text-accent-foreground ring-2 ring-accent ring-offset-2'
+                  : 'bg-primary text-primary-foreground hover:bg-primary/90'
+              }`}
             >
-              <GripVertical className="w-4 h-4 opacity-70" />
+              <GripVertical className="w-4 h-4 opacity-70 hidden md:block" />
               {word}
             </div>
           ))}
@@ -141,11 +167,13 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
                     <span
                       onDrop={(e) => handleDrop(e, item.id)}
                       onDragOver={handleDragOver}
-                      onClick={() => !showResults && answers[item.id] && removeAnswer(item.id)}
-                      className={`inline-flex items-center justify-center gap-1 min-w-[100px] min-h-[36px] px-3 py-2 rounded border-2 border-dashed transition-all ${
+                      onClick={() => handleBlankTap(item.id)}
+                      className={`inline-flex items-center justify-center gap-1 min-w-[80px] md:min-w-[100px] min-h-[36px] px-2 md:px-3 py-2 rounded border-2 border-dashed transition-all ${
                         answers[item.id]
                           ? 'border-primary bg-primary/10 cursor-pointer hover:bg-primary/20'
-                          : 'border-muted-foreground/30 hover:border-primary/50 hover:bg-primary/5'
+                          : selectedWord
+                            ? 'border-accent bg-accent/10 ring-2 ring-accent/30'
+                            : 'border-muted-foreground/30 hover:border-primary/50 hover:bg-primary/5'
                       } ${draggedWord ? 'ring-2 ring-primary/20' : ''}`}
                     >
                       {answers[item.id] ? (
@@ -179,21 +207,21 @@ export const FillInBlanks = ({ items, wordBank, title, imageUrl }: FillInBlanksP
             Score: {correctCount} / {items.length} correct!
           </p>
           {correctCount === items.length && (
-            <p className="text-green-600 font-medium mt-1">🎉 Perfect! All answers are correct!</p>
+            <p className="text-green-600 font-medium mt-1">Perfect! All answers are correct!</p>
           )}
         </Card>
       )}
 
       <div className="flex gap-3">
-        <Button 
-          onClick={checkAnswers} 
+        <Button
+          onClick={checkAnswers}
           disabled={Object.keys(answers).length < items.length}
           className="flex-1"
         >
           Check Answers
         </Button>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={resetGame}
           className="flex items-center gap-2"
         >

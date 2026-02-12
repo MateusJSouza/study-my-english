@@ -25,10 +25,10 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
   
   return (
     <section className="mb-16">
-      <div className={`bg-gradient-to-r ${getLevelColor(level)} rounded-2xl p-8 mb-8 border border-border`}>
+      <div className={`bg-gradient-to-r ${getLevelColor(level)} rounded-2xl p-4 md:p-8 mb-6 md:mb-8 border border-border`}>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h2 className="text-4xl font-bold text-foreground mb-2">{level}</h2>
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-2">{level}</h2>
             <p className="text-muted-foreground">
               {level === "A1" && "Beginner - Start your journey"}
               {level === "A2" && "Elementary - Build foundations"}
@@ -43,7 +43,7 @@ export const LevelSection = ({ level, levelName, readings, totalTexts }: LevelSe
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {readings.map((reading, index) => (
           <ReadingCard
             key={index}
