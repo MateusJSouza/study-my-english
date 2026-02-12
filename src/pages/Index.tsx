@@ -189,7 +189,11 @@ const Index = () => {
           <div className="text-center">
             <h3 className="text-lg font-bold text-foreground mb-1">The English Club</h3>
             <p className="text-muted-foreground text-sm mb-4">Improve your English, one text at a time</p>
-            <p className="text-xs text-muted-foreground">&copy; 2025 All rights reserved.</p>
+            
+            <div className="flex flex-col gap-2 items-center">
+              <p className="text-xs text-muted-foreground">Developed by <a href="https://devsoftenterprise.com.br" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Devsoft Enterprise &#174;</a></p>
+              <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} All rights reserved.</p>
+            </div>
           </div>
         </div>
       </footer>
